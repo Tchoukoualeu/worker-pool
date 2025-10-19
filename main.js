@@ -1,54 +1,54 @@
 // Worker Pool Implementation in JavaScript
-// This demonstrates concurrent task processing with a limited number of workers
 
 async function worker(id, tasks) {
   for (const task of tasks) {
-    console.log(`worker ${id} starting ${task}`);
+    console.log(`worker ${id} starting ${task}`)
 
-    // Simulate work (like time.Sleep in Go)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    console.log(`worker ${id} completed ${task}`);
+    console.log(`worker ${id} completed ${task}`)
   }
 }
 
 async function main() {
-  const numberOfWorkers = 3;
-  const totalTasks = 20;
+  const numberOfWorkers = 3
+  const totalTasks = 20
 
-  // Create tasks
-  const allTasks = [];
+  const allTasks = []
   for (let i = 1; i < totalTasks; i++) {
-    allTasks.push(`Task -${i}: Process data`);
+    allTasks.push(`Task ${i}: Process data`)
   }
 
   // Produce tasks with delay
-  const taskQueue = [];
+  const taskQueue = []
   const producer = async () => {
     for (let i = 0; i < allTasks.length; i++) {
-      taskQueue.push(allTasks[i]);
-      console.log(`Produced: ${allTasks[i]}`);
-      await new Promise(resolve => setTimeout(resolve, 500));
+      taskQueue.push(allTasks[i])
+      console.log(`Produced: ${allTasks[i]}`)
+      await new Promise((resolve) => setTimeout(resolve, 500))
     }
-  };
+  }
 
   // Start producer
-  producer();
+  producer()
 
   // Distribute tasks among workers
-  const workerPromises = [];
-  const tasksPerWorker = Math.ceil(allTasks.length / numberOfWorkers);
+  const workerPromises = []
+  const tasksPerWorker = Math.ceil(allTasks.length / numberOfWorkers)
 
   for (let i = 0; i < numberOfWorkers; i++) {
-    const workerTasks = allTasks.slice(i * tasksPerWorker, (i + 1) * tasksPerWorker);
-    workerPromises.push(worker(i + 1, workerTasks));
+    const workerTasks = allTasks.slice(
+      i * tasksPerWorker,
+      (i + 1) * tasksPerWorker
+    )
+    workerPromises.push(worker(i + 1, workerTasks))
   }
 
   // Wait for all workers to complete
-  await Promise.all(workerPromises);
+  await Promise.all(workerPromises)
 
-  console.log("All tasks completed!");
+  console.log("All tasks completed!")
 }
 
 // Run the worker pool
-main().catch(console.error);
+main().catch(console.error)

@@ -23,7 +23,7 @@ func main() {
 
 	go func(){
 		for i := 1; i < 20; i++ {
-			task := Task(fmt.Sprintf("Task -%d: Process data", i))
+			task := Task(fmt.Sprintf("Task %d: Process data", i))
 			tasks <- task
 			fmt.Printf("Produced: %s\n", task)
 			time.Sleep(500 * time.Millisecond)
